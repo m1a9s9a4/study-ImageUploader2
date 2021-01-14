@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {FormEvent} from 'react';
 import {makeStyles} from "@material-ui/styles";
 import logo from '../images/upload.svg';
 
 type Props = {
   setIsUploading: (uploading: boolean) => void,
-  setImage: (url: string) => void,
+  storeImage: (e: any) => void,
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -25,31 +25,43 @@ const useStyles = makeStyles((theme) => ({
   },
   uploadText: {
     color: '#ababab',
-  }
+  },
+  textBetween: {
+    margin: '30px 0',
+    color: '#ababab',
+  },
+
 }));
 
-function Upload({setIsUploading, setImage}: Props) {
+function Upload({setIsUploading, storeImage}: Props) {
   const classes = useStyles();
-  const onDrop = (e: any): void => {
+  const onDrop = (e: React.MouseEvent): void => {
     e.preventDefault();
     setIsUploading(true);
-    console.log('hello');
+    storeImage(e);
+  }
+  const onChange = (e: FormEvent): void => {
+    e.preventDefault();
+    setIsUploading(true);
+    storeImage(e);
   }
 
-  const onDragOver = (e: any): void => {
+  const onDragOver = (e: React.MouseEvent): void => {
     e.preventDefault();
-    e.stopPropagation();
-    console.log('on drag over');
   }
 
   return (
-    <div className={classes.wrapper} draggable={true} onDrop={onDrop} onDragOver={onDragOver}>
+    <div className={classes.wrapper} draggable={true}>
       <h2>Upload your image</h2>
       <p>File should be Jpeg, Png...</p>
-      <div className={classes.uploadDiv}>
-        <img src={logo} alt="upload image here" />
+      <div className={classes.uploadDiv} onDrop={onDrop} onDragOver={onDragOver}>
+        <img src={logo} alt="upload here" />
         <p className={classes.uploadText}>Drag & Drop your image here</p>
       </div>
+      <p className={classes.textBetween}>
+        Or
+      </p>
+      <input type="file" onChange={onChange} placeholder="Upload file"/>
     </div>
   )
 }
