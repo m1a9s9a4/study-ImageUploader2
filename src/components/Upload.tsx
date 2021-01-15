@@ -11,11 +11,12 @@ const useStyles = makeStyles((theme) => ({
   uploadDiv: {
     position: 'relative',
     boxSizing: 'border-box',
-    width: '85%',
+    width: '338px',
+    height: '218.9px',
     margin: '0 auto 20px',
     paddingTop: '35px',
     paddingBottom: '35px',
-    border: '1px dashed #97bef4',
+    border: '1px dashed #97BEF4',
     borderRadius: '12px',
     background: '#f6f8fb',
   },
@@ -24,13 +25,12 @@ const useStyles = makeStyles((theme) => ({
     color: '#4e4d4d',
   },
   uploadText: {
-    color: '#ababab',
+    color: '#BDBDBD',
   },
   textBetween: {
     margin: '30px 0',
-    color: '#ababab',
+    color: '#BDBDBD',
   },
-
 }));
 
 function Upload({setIsUploading, storeImage}: Props) {
@@ -61,7 +61,7 @@ function Upload({setIsUploading, storeImage}: Props) {
       <p className={classes.textBetween}>
         Or
       </p>
-      <input type="file" onChange={onChange} placeholder="Upload file"/>
+      <input type="file" onChange={onChange} placeholder="Upload file" />
     </div>
   )
 }
