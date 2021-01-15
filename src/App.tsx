@@ -1,13 +1,9 @@
 import React, {useState} from 'react';
-import {makeStyles} from "@material-ui/styles";
 import Upload from './components/Upload';
 import Uploading from './components/Uploading';
 import Uploaded from './components/Uploaded';
 import firebase, { storage } from './firebase/config';
-
-const classes = makeStyles({
-
-});
+import {v4 as uuidv4} from 'uuid';
 
 const uploadToStore = (
   file: File,
@@ -17,9 +13,12 @@ const uploadToStore = (
 ) => {
   if (!file) {
     console.log('ファイルが選択されていません');
+    setIsUploading(false);
+    setPercent(0);
     return;
   }
-  const uploadTask = storage.ref(`/images/${file.name}`).put(file);
+  const newFileName = uuidv4() + '-' + Date.now();
+  const uploadTask = storage.ref(`/images/${newFileName}`).put(file);
 
   uploadTask.on(
     firebase.storage.TaskEvent.STATE_CHANGED,
@@ -33,11 +32,12 @@ const uploadToStore = (
     async () => {
       storage
         .ref('images')
-        .child(file.name)
+        .child(newFileName)
         .getDownloadURL()
         .then(firebaseUrl => {
           setImageUrl(firebaseUrl);
           setIsUploading(false);
+          setPercent(0);
         })
     },
   )
