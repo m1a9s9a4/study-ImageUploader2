@@ -1,5 +1,7 @@
 import React from 'react';
 import {makeStyles} from "@material-ui/styles";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   url: string;
@@ -25,6 +27,27 @@ const useStyles = makeStyles((theme) => ({
   imageContainer: {
     width: '80%',
     objectFit: 'contain',
+  },
+  inputWrapper: {
+    width: '100%',
+    position: 'relative',
+  },
+  urlInput: {
+    borderRadius: '5px',
+    border: '1px solid #696B6E',
+    width: '70%',
+    padding: '10px',
+  },
+  copyBtn: {
+    borderRadius: '5px',
+    backgroundColor: '#0d98de',
+    border: '1px solid #fff',
+    color: '#fff',
+    padding: '10px',
+  },
+  title: {
+    color: '#429f0b',
+    fontSize: '40px',
   }
 }));
 
@@ -33,17 +56,24 @@ function Uploaded({url}: Props) {
   const classes = useStyles();
   const imageId = 'imageUrl';
   const onClick = (e: React.MouseEvent): void => {
-
+    e.preventDefault();
+    const target = document.getElementById(imageId) as HTMLInputElement;
+    target.select();
+    document.execCommand('copy');
   }
 
   return (
     <div className={classes.wrapper}>
-      <h2>Upload Success!!</h2>
+      <h2>
+        <FontAwesomeIcon className={classes.title} icon={faCheckCircle} />
+      </h2>
       <p>Your Image has been uploaded!</p>
       <div className={ classes.uploadedDiv }>
         <img src={ url } alt="uploaded" className={classes.imageContainer}/>
-        <input id={imageId} placeholder={url} />
-        <button onClick={onClick} type="button">Copy</button>
+        <div className={classes.inputWrapper}>
+          <input id={imageId} value={url} className={classes.urlInput} readOnly />
+          <button onClick={onClick} className={classes.copyBtn}>Copy</button>
+        </div>
       </div>
     </div>
   )
